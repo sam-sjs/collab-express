@@ -1,6 +1,10 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const projectsController = require('./controllers/projectsController');
+const cors = require('cors');
 const app = express();
+
+app.use(cors());
 
 // Setup database and connect
 const mongoDB = 'mongodb://127.0.0.1/collab';
@@ -14,3 +18,6 @@ db.on('error', err => console.log('Connection error:', err));
 const server = app.listen(8000, () => {
   console.log('Listening at 127.0.0.1:8000...');
 });
+
+// Route endpoints
+app.get('/flights', projectsController.index);
