@@ -1,10 +1,12 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const projectsController = require('./controllers/projectsController');
+const usersController = require('./controllers/usersController');
 const cors = require('cors');
 const app = express();
 
 app.use(cors());
+app.use(express.json());
 
 // Setup database and connect
 const mongoDB = 'mongodb://127.0.0.1/collab';
@@ -21,3 +23,4 @@ const server = app.listen(8000, () => {
 
 // Route endpoints
 app.get('/flights', projectsController.index);
+app.post('/users/create', usersController.create);
