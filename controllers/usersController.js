@@ -16,5 +16,17 @@ module.exports = {
       console.log('ERROR querying DB for users create');
       res.sendStatus(500);
     }
+  },
+
+  async show(req, res) {
+    try {
+      const user = await User.findOne({_id: req.body.params.id})
+      .populate('leadOn')
+      .populate('memberOn');
+      res.json(user);
+    } catch(error) {
+      console.log('ERROR querying DB for user show');
+      res.sendStatus(500);
+    }
   }
 } // module.exports

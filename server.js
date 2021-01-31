@@ -24,3 +24,4 @@ const server = app.listen(8000, () => {
 // Route endpoints
 app.get('/flights', projectsController.index);
 app.post('/users/create', usersController.create);
+app.post('/user', usersController.show);
