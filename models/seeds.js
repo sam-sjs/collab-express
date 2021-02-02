@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 const Project = require('./Project');
 const User = require('./User');
 
@@ -20,18 +21,21 @@ db.once('open', async () => {
     const u1 = new User({
       name: 'John Doe',
       email: 'john.doe@fakeemail.com',
+      passwordDigest: bcrypt.hashSync('chicken', 10),
       skills: ['Graphic Designer', 'Project Manager'],
       image: 'http://www.placecage.com/200/200'
     });
     const u2 = new User({
       name: 'Papa Smurf',
       email: 'gopapa@bluestuff.com',
+      passwordDigest: bcrypt.hashSync('chicken', 10),
       skills: ['Writer', 'Photographer'],
       image: 'http://www.placecage.com/200/200'
     });
     const u3 = new User({
       name: 'Bob T. Builder',
       email: 'bob@construction.com',
+      passwordDigest: bcrypt.hashSync('chicken', 10),
       skills: ['Javascript Developer', 'Python Developer'],
       image: 'http://www.placecage.com/200/200'
     });
@@ -78,7 +82,7 @@ db.once('open', async () => {
     u3.leadOn = [space._id];
     u3.memberOn = [cabin._id];
     await u3.save();
-    
+
   } catch(error) {
     console.log('ERROR:', error);
   }
