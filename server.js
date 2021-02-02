@@ -7,8 +7,6 @@ const app = express();
 
 // Authentication
 const User = require('./models/User');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 const jwtAuthenticate = require('express-jwt');
 const crypto = require('crypto');
 const toHash = 'ThisIsAStringOfNonsenseToBeTurnedIntoAServerKeyHAHAHAHA'
@@ -45,31 +43,9 @@ const server = app.listen(8000, () => {
 // Route endpoints
 app.get('/flights', projectsController.index);
 app.post('/users/create', usersController.create);
-app.post('/user', checkAuth(), usersController.show);
-app.patch('/user/update', usersController.update);
+app.get('/user', checkAuth(), usersController.show);
+app.patch('/user/update', checkAuth(), usersController.update);
+app.post('/user/delete', checkAuth(), usersController.delete);
 
 // Authentication route
-app.post('/login', async (req, res) => {
-  const {email, password} = req.body;
-  try {
-    const user = await User.findOne({email});
-    if(user && bcrypt.compareSync(password, user.passwordDigest)) {
-      const token = jwt.sign(
-        {
-          _id: user._id,
-          name: user.name,
-          email: user.email
-        },
-        SERVER_SECRET_KEY,
-        {expiresIn: '24h'}
-      );
-      console.log('User:', user);
-      res.json({user, token});
-    } else {
-      res.sendStatus(401);
-    }
-  } catch(error) {
-    console.log('Login error', req.body, error);
-    res.sendStatus(500);
-  }
-})
+app.post('/login', usersController.login);
